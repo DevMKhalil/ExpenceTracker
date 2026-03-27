@@ -1,20 +1,17 @@
 <!--
   Sync Impact Report
   ==================
-  Version change: N/A → 1.0.0 (initial ratification)
-  Modified principles: N/A (initial)
-  Added sections:
-    - Principle I: Clean Architecture & Code Quality
-    - Principle II: UI/UX Excellence
-    - Principle III: Flexible Data Persistence
-    - Technology Stack & Constraints
-    - Development Workflow & Quality Gates
-    - Governance
-  Removed sections: N/A
+  Version change: 1.1.0 → 1.2.0 (MINOR — new localization
+  requirement added to Principle II and Tech Stack)
+  Modified principles:
+    - Principle II: added Localization & Bi-Directional Layout
+      section (Arabic + English, RTL/LTR, language switcher)
+  Added sections: None (expanded within existing sections)
+  Removed sections: None
   Templates requiring updates:
-    - .specify/templates/plan-template.md ✅ aligned (Constitution Check section)
-    - .specify/templates/spec-template.md ✅ aligned (requirements/scenarios)
-    - .specify/templates/tasks-template.md ✅ aligned (phase structure)
+    - .specify/templates/plan-template.md ✅ aligned
+    - .specify/templates/spec-template.md ✅ aligned
+    - .specify/templates/tasks-template.md ✅ aligned
   Follow-up TODOs: None
 -->
 
@@ -24,8 +21,32 @@
 
 ### I. Clean Architecture & Code Quality
 
-Every feature MUST follow Clean Architecture with strict layer
-separation. Code MUST be organized into these layers:
+The application MUST be structured as a **Modular Monolith**.
+Each business capability (e.g., Expenses, Categories, Budgets,
+Reports) MUST be isolated into its own module with clear
+boundaries:
+
+- **Module Isolation**: Every module MUST be a separate folder
+  (or class-library project) containing its own Domain,
+  Application, and Infrastructure layers. Modules MUST NOT
+  reference each other's internal types directly.
+- **Inter-Module Communication**: Modules MUST communicate only
+  through well-defined public contracts — shared interfaces,
+  domain events, or an in-process mediator. No module may
+  directly call another module's repositories or services.
+- **Independent Deployability (future)**: Module boundaries MUST
+  be clean enough that extracting a module into a separate
+  microservice requires no changes to other modules — only
+  swapping the in-process mediator call for an HTTP/message
+  bus call.
+- **Shared Kernel**: Cross-cutting types used by multiple modules
+  (e.g., `UserId`, `Money` value objects, base `Entity` class)
+  MUST live in a small Shared Kernel project. The Shared Kernel
+  MUST remain minimal — if a type is used by only one module,
+  it belongs in that module.
+
+Within each module, code MUST follow Clean Architecture with
+strict layer separation:
 
 - **Domain Layer**: Pure C# classes, value objects, domain events,
   and aggregates. Zero framework dependencies. All business rules
@@ -70,6 +91,14 @@ Every UI decision MUST prioritize user experience:
 - **Mobile-First**: All layouts MUST be responsive and optimized
   for mobile devices first, then scale up to desktop. Touch
   targets MUST meet minimum 44×44px sizing.
+- **Mobile via PWA (minimum tech)**: The PWA approach is the ONLY
+  mobile strategy — no native apps, no Xamarin/MAUI, no Blazor
+  Hybrid, no React Native. The PWA MUST deliver a native-like
+  experience on mobile: home-screen installable, full-screen
+  mode (`"display": "standalone"` in manifest), splash screen,
+  app icon, and offline support via service worker caching.
+  This keeps the technology footprint to a single ASP.NET Core
+  Razor Pages codebase serving all platforms.
 - **Theme Support**: The application MUST support both dark and
   light themes. Theme preference MUST respect the user's system
   setting (`prefers-color-scheme`) and allow manual override.
@@ -88,6 +117,30 @@ Every UI decision MUST prioritize user experience:
   navigation, clear feedback for user actions, optimistic UI
   updates where safe, skeleton loaders over spinners, and
   meaningful empty states.
+- **Localization & Bi-Directional Layout**: The application MUST
+  support two languages: **Arabic (ar)** and **English (en)**.
+  The user MUST be able to switch between them at any time via
+  a visible language toggle in the UI. Requirements:
+  - ASP.NET Core request localization middleware MUST be used
+    with `IStringLocalizer<T>` / `IViewLocalizer` for all
+    user-facing strings. No hardcoded display text in Razor
+    pages or PageModel classes.
+  - Resource files (`.resx`) MUST be organized per module
+    (e.g., `Resources/Pages/Expenses/Index.ar.resx`).
+  - When Arabic is active, the entire layout MUST switch to
+    **RTL** (`dir="rtl"` on `<html>`). CSS MUST use logical
+    properties (`margin-inline-start` instead of `margin-left`)
+    so layouts flip correctly without duplicate stylesheets.
+  - Bootstrap 5 RTL bundle MUST be loaded when `dir="rtl"` is
+    active.
+  - The selected language MUST be persisted in a cookie
+    (`.AspNetCore.Culture`) so it survives page reloads and
+    sessions.
+  - Date, number, and currency formatting MUST respect the
+    active culture (`CultureInfo`).
+  - The language toggle MUST switch instantly without a full
+    page reload where feasible (a form POST to set the cookie
+    followed by redirect is acceptable for Razor Pages).
 
 ### III. Flexible Data Persistence
 
@@ -108,6 +161,16 @@ only configuration changes and a new `IRepository` implementation:
   where needed, no file-specific concerns leaking into the
   domain). When switching to SQL Server, only a new DbContext
   and EF Core repository implementation are needed.
+- **Fluent API Mapping (mandatory)**: All entity-to-table mapping
+  MUST use EF Core Fluent API via `IEntityTypeConfiguration<T>`
+  classes — one configuration class per entity, co-located in
+  the module's Infrastructure layer. Data annotations on domain
+  entities are PROHIBITED (domain classes MUST remain persistence
+  ignorant). Fluent configurations MUST define: primary keys,
+  column types/lengths, required/optional fields, relationships,
+  indexes, and value conversions. Even while the file-based
+  provider is active, Fluent configurations MUST be maintained
+  so that switching to EF Core requires zero mapping work.
 - **Provider Switching**: The active persistence provider MUST be
   selectable via `appsettings.json` configuration. Dependency
   injection MUST wire the correct implementation at startup based
@@ -129,6 +192,10 @@ only configuration changes and a new `IRepository` implementation:
   mode, supplemented by site-specific CSS
 - **JavaScript**: Vanilla JS or minimal library for PWA service
   worker, theme toggling, and motion. No heavy SPA frameworks.
+- **Localization**: ASP.NET Core request localization with
+  `IStringLocalizer` / `IViewLocalizer`. Resource files (`.resx`)
+  for Arabic (ar) and English (en). Bootstrap 5 RTL CSS bundle
+  for Arabic layout.
 - **Target Platform**: Cross-platform web (desktop + mobile
   browsers), installable as PWA
 - **Performance**: Pages MUST load in under 2 seconds on 3G.
@@ -177,4 +244,4 @@ architectural choices MUST comply with these principles.
   practical constraint, document the conflict, the chosen
   resolution, and the justification in the feature's plan.
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-27 | **Last Amended**: 2026-03-27
+**Version**: 1.2.0 | **Ratified**: 2026-03-27 | **Last Amended**: 2026-03-27
