@@ -22,7 +22,7 @@ Each badge has a name and a unique color chosen by the user. Badges serve as reu
 1. **Given** the user is on the badges page, **When** they create a new badge with name "Food" and color green, **Then** the badge appears in the badge list with the correct name and color.
 2. **Given** a badge "Transport" exists, **When** the user edits its name to "Commute" and changes its color, **Then** the badge list reflects the updated name and color.
 3. **Given** a badge "Old Category" exists with no expenses attached, **When** the user deletes it, **Then** the badge is removed from the list.
-4. **Given** a badge has expenses attached, **When** the user attempts to delete it, **Then** the system warns the user and asks for confirmation before proceeding.
+4. **Given** a badge has expenses attached, **When** the user deletes it, **Then** the system warns the user, and upon confirmation, soft-deletes the badge (hidden from lists but preserved on existing expenses).
 5. **Given** the user is creating a badge, **When** they try to save without a name, **Then** the system shows a validation error requiring a name.
 6. **Given** the user is on the badges page, **When** they view the list, **Then** each badge displays its name with its assigned color clearly visible.
 
@@ -79,11 +79,12 @@ As a user, I want a dashboard that shows my spending summaries — daily totals,
 
 **Acceptance Scenarios**:
 
-1. **Given** the user has recorded expenses today, **When** they open the dashboard, **Then** they see today's total spending amount.
-2. **Given** the user has recorded expenses this month, **When** they view the monthly summary, **Then** they see the total spending for the current month.
-3. **Given** expenses exist with different badges, **When** the user views the badge breakdown, **Then** they see total spending per badge, displayed with each badge's color.
+1. **Given** the user has recorded non-pending expenses today, **When** they open the dashboard, **Then** they see today's total spending amount (excluding pending expenses).
+2. **Given** the user has recorded non-pending expenses this month, **When** they view the monthly summary, **Then** they see the total spending for the current month (excluding pending expenses).
+3. **Given** expenses exist with different badges, **When** the user views the badge breakdown, **Then** they see total spending per badge, displayed with each badge's color (excluding pending expenses).
 4. **Given** no expenses exist for today, **When** the user views the daily summary, **Then** the dashboard shows zero or a "no expenses" message.
 5. **Given** multiple months of expenses exist, **When** the user views the dashboard, **Then** they can see the current month's summary by default.
+6. **Given** the user has pending expenses, **When** they view the dashboard, **Then** a separate pending total is displayed alongside the main totals.
 
 ---
 
@@ -108,7 +109,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 
 - What happens when a user tries to enter a negative amount? The system should reject negative values and show a validation error.
 - What happens when a user enters a future date? The system should allow future dates (for planned expenses) but visually indicate them.
-- What happens when all badges are deleted but expenses with those badges exist? Historical badge associations should be preserved or gracefully handled.
+- What happens when all badges are deleted but expenses with those badges exist? Soft-deleted badges remain visible on their historical expenses (with their original name and color) but cannot be selected for new expenses.
 - What happens when the user enters a very large amount? The system should support reasonable numeric ranges and show an error for values exceeding the maximum.
 - What happens when the user creates a badge with a name that already exists? The system should prevent duplicate badge names.
 
@@ -120,7 +121,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **FR-001**: System MUST allow users to create a badge with a name and a user-selected color.
 - **FR-002**: System MUST allow users to view all badges in a list, each displayed with its assigned color.
 - **FR-003**: System MUST allow users to edit a badge's name and color.
-- **FR-004**: System MUST allow users to delete a badge, with a confirmation prompt if expenses reference it.
+- **FR-004**: System MUST allow users to delete a badge. If expenses reference it, the badge is soft-deleted: hidden from badge selection and management lists, but preserved on existing expenses for historical accuracy. A confirmation prompt is shown before proceeding.
 - **FR-005**: System MUST enforce unique badge names (case-insensitive).
 
 **Expense Entry**:
@@ -136,19 +137,24 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **FR-015**: System MUST allow users to delete an expense.
 
 **Dashboard**:
-- **FR-016**: System MUST display a daily spending total for the current day.
-- **FR-017**: System MUST display a monthly spending total for the current month.
-- **FR-018**: System MUST display a spending breakdown grouped by badge, showing each badge's total with its assigned color.
+- **FR-016**: System MUST display a daily spending total for the current day, excluding pending expenses.
+- **FR-017**: System MUST display a monthly spending total for the current month, excluding pending expenses.
+- **FR-018**: System MUST display a spending breakdown grouped by badge, showing each badge's total with its assigned color, excluding pending expenses.
+- **FR-024**: System MUST display a separate pending total on the dashboard showing the sum of all pending expenses for the current period.
 
 **Quick Entry UX**:
 - **FR-019**: System MUST reset the expense form after a successful save, ready for the next entry.
 - **FR-020**: System MUST support logical tab-order navigation through form fields.
 - **FR-021**: Badge selection MUST use an inline toggle mechanism (no separate dialog required).
 
+**Localization & Layout**:
+- **FR-022**: System MUST render the entire UI in Arabic with right-to-left (RTL) layout direction.
+- **FR-023**: All labels, placeholders, validation messages, and dashboard text MUST be in Arabic.
+
 ### Key Entities
 
-- **Badge**: A reusable category label for expenses. Has a unique name and a user-chosen color. Can be associated with many expenses.
-- **Expense**: A spending record. Has a name, monetary amount, date/time, importance level (Normal / Important / Very Important), optional notes, and a pending flag. Can be associated with one or more badges.
+- **Badge**: A reusable category label for expenses. Has a unique name, a user-chosen color, and an IsDeleted flag (for soft-delete). Can be associated with many expenses. Soft-deleted badges remain on historical expenses but are hidden from selection.
+- **Expense**: A spending record. Has a name, monetary amount (stored as decimal with 2-place precision, no currency symbol), date/time, importance level (Normal / Important / Very Important), optional notes, and a pending flag. Can be associated with one or more badges.
 
 ## Success Criteria *(mandatory)*
 
@@ -162,12 +168,23 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **SC-006**: All CRUD operations for badges and expenses complete with visible feedback within 2 seconds.
 - **SC-007**: 90% of first-time users can add an expense without guidance or documentation.
 
+## Clarifications
+
+### Session 2026-03-28
+
+- Q: What is the primary UI language and layout direction? → A: Arabic (RTL layout)
+- Q: What data persistence mechanism should be used? → A: SQLite (file-based, with EF Core)
+- Q: What happens to expenses when a badge with expenses is deleted? → A: Soft-delete — badge is hidden from selection but preserved on existing expenses for historical accuracy
+- Q: What currency and decimal precision for expense amounts? → A: No specific currency symbol; display numbers with 2 decimal places
+- Q: Should pending expenses be included in dashboard totals? → A: Exclude from main totals; show a separate "pending total" on dashboard
+
 ## Assumptions
 
+- The application UI is in Arabic with right-to-left (RTL) layout direction. All labels, validation messages, and user-facing text are in Arabic.
 - The application is single-user (no authentication or multi-user support required in this version).
-- The application will store data locally; cloud sync is out of scope for this version.
-- Currency is uniform — the system uses a single currency and does not handle currency conversion.
+- The application will store data locally using SQLite as the database engine, accessed via Entity Framework Core. Cloud sync is out of scope for this version.
+- Currency is uniform — the system does not display a currency symbol and does not handle currency conversion. All amounts are stored and displayed as plain numbers with 2 decimal places.
 - The application is web-based, running in a browser. Mobile-native versions are out of scope.
 - Badge colors are chosen from a predefined palette or a color picker; the exact mechanism is an implementation detail.
-- "Pending" expenses are included in dashboard totals (they represent real planned spending).
+- "Pending" expenses are excluded from the main dashboard totals (daily, monthly, by-badge). The dashboard displays a separate pending total so users can distinguish confirmed spending from planned/uncertain spending.
 - The existing ASP.NET project structure will be used as the foundation for this feature.
