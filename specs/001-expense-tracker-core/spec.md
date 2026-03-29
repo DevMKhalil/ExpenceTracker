@@ -64,7 +64,7 @@ As a user, I want to view, edit, and delete my recorded expenses so I can manage
 1. **Given** expenses exist, **When** the user views the expense list, **Then** expenses are displayed with name, amount, date, badges (shown in their colors), importance level, and pending status.
 2. **Given** an expense exists, **When** the user edits its amount from 150 to 200, **Then** the updated amount is saved and reflected in the list.
 3. **Given** an expense exists, **When** the user deletes it, **Then** the expense is removed from the list.
-4. **Given** the expense list is displayed, **When** there are many expenses, **Then** the list supports scrolling or pagination to remain usable.
+4. **Given** the expense list is displayed, **When** there are many expenses, **Then** the list supports a "Load More" button pagination approach to remain usable.
 5. **Given** the user views an expense, **When** it is marked as "Pending", **Then** it is visually distinguished from finalized expenses.
 
 ---
@@ -83,7 +83,7 @@ As a user, I want a dashboard that shows my spending summaries — daily totals,
 2. **Given** the user has recorded non-pending expenses this month, **When** they view the monthly summary, **Then** they see the total spending for the current month (excluding pending expenses).
 3. **Given** expenses exist with different badges, **When** the user views the badge breakdown, **Then** they see total spending per badge, displayed with each badge's color (excluding pending expenses).
 4. **Given** no expenses exist for today, **When** the user views the daily summary, **Then** the dashboard shows zero or a "no expenses" message.
-5. **Given** multiple months of expenses exist, **When** the user views the dashboard, **Then** they can see the current month's summary by default.
+5. **Given** multiple months of expenses exist, **When** the user views the dashboard, **Then** they see the current month's summary only. There is no historical month navigation; the dashboard always shows the current month.
 6. **Given** the user has pending expenses, **When** they view the dashboard, **Then** a separate pending total is displayed alongside the main totals.
 
 ---
@@ -110,7 +110,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - What happens when a user tries to enter a negative amount? The system should reject negative values and show a validation error.
 - What happens when a user enters a future date? The system should allow future dates (for planned expenses) but visually indicate them.
 - What happens when all badges are deleted but expenses with those badges exist? Soft-deleted badges remain visible on their historical expenses (with their original name and color) but cannot be selected for new expenses.
-- What happens when the user enters a very large amount? The system should support reasonable numeric ranges and show an error for values exceeding the maximum.
+- What happens when the user enters a very large amount? The system MUST show a validation error for values exceeding the maximum limit defined in FR-006 (99,999,999.99).
 - What happens when the user creates a badge with a name that already exists? The system should prevent duplicate badge names.
 
 ## Requirements *(mandatory)*
@@ -121,11 +121,11 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **FR-001**: System MUST allow users to create a badge with a name and a user-selected color.
 - **FR-002**: System MUST allow users to view all badges in a list, each displayed with its assigned color.
 - **FR-003**: System MUST allow users to edit a badge's name and color.
-- **FR-004**: System MUST allow users to delete a badge. If expenses reference it, the badge is soft-deleted: hidden from badge selection and management lists, but preserved on existing expenses for historical accuracy. A confirmation prompt is shown before proceeding.
+- **FR-004**: System MUST allow users to delete a badge. If expenses reference it, the badge is soft-deleted: hidden from badge selection and management lists, but preserved on existing expenses for historical accuracy. Soft-deleted badges on historical expenses MUST be displayed with reduced opacity and a "deleted" indicator. A confirmation prompt is shown before proceeding.
 - **FR-005**: System MUST enforce unique badge names (case-insensitive).
 
 **Expense Entry**:
-- **FR-006**: System MUST allow users to create an expense with: name (required), amount (required, positive number), date, importance level, badges, notes, and pending status.
+- **FR-006**: System MUST allow users to create an expense with: name (required), amount (required, positive number, maximum 99,999,999.99), date, importance level, badges, notes, and pending status.
 - **FR-007**: System MUST default the expense date to the current date and time when creating a new expense.
 - **FR-008**: System MUST allow users to manually set or change the expense date.
 - **FR-009**: System MUST provide three importance levels: Normal, Important, and Very Important.
@@ -140,7 +140,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **FR-016**: System MUST display a daily spending total for the current day, excluding pending expenses.
 - **FR-017**: System MUST display a monthly spending total for the current month, excluding pending expenses.
 - **FR-018**: System MUST display a spending breakdown grouped by badge, showing each badge's total with its assigned color, excluding pending expenses.
-- **FR-024**: System MUST display a separate pending total on the dashboard showing the sum of all pending expenses for the current period.
+- **FR-024**: System MUST display a separate pending total on the dashboard showing the sum of all pending expenses regardless of time range.
 
 **Quick Entry UX**:
 - **FR-019**: System MUST reset the expense form after a successful save, ready for the next entry.
@@ -148,8 +148,15 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **FR-021**: Badge selection MUST use an inline toggle mechanism (no separate dialog required).
 
 **Localization & Layout**:
-- **FR-022**: System MUST render the entire UI in Arabic with right-to-left (RTL) layout direction.
-- **FR-023**: All labels, placeholders, validation messages, and dashboard text MUST be in Arabic.
+- **FR-022**: System MUST default to Arabic with RTL layout direction, and dynamically switch to LTR when English is active.
+- **FR-023**: All user-facing text (labels, placeholders, validation messages, dashboard text) MUST be localized via resource files (.resx) and rendered in the active locale (Arabic or English).
+- **FR-025**: System MUST visually indicate future-dated expenses by displaying a distinct "Future" badge and a subtle yellow background highlight so users can distinguish planned expenses from past ones.
+
+**Accessibility**:
+- **FR-026**: System MUST meet WCAG 2.1 AA compliance — semantic HTML, ARIA labels on interactive elements, keyboard navigation, and minimum 4.5:1 contrast ratio for normal text.
+
+**Expense List Behavior**:
+- **FR-027**: System MUST default the expense list sort order to Date descending (newest first).
 
 ### Key Entities
 
@@ -163,17 +170,17 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 - **SC-001**: Users can create a new badge in under 30 seconds.
 - **SC-002**: Users can record a basic expense (name, amount, one badge) in under 20 seconds.
 - **SC-003**: Users can view their daily and monthly spending totals within 2 seconds of opening the dashboard.
-- **SC-004**: Users can identify their highest spending category (badge) at a glance from the dashboard.
-- **SC-005**: The form resets immediately after saving an expense, enabling consecutive entries without delay.
+- **SC-004**: The dashboard badge breakdown is sorted by total descending, placing the highest spending category first.
+- **SC-005**: After saving an expense, the next entry can begin with zero delay (form resets per FR-019).
 - **SC-006**: All CRUD operations for badges and expenses complete with visible feedback within 2 seconds.
-- **SC-007**: 90% of first-time users can add an expense without guidance or documentation.
+- **SC-007**: The expense entry form requires filling only 2 fields (name and amount) with all other fields pre-defaulted, enabling first-time users to add an expense without guidance.
 
 ## Clarifications
 
 ### Session 2026-03-28
 
 - Q: What is the primary UI language and layout direction? → A: Arabic (RTL layout)
-- Q: What data persistence mechanism should be used? → A: SQLite (file-based, with EF Core)
+- Q: What data persistence mechanism should be used? → A: JSON files (with EF Core-ready structure for future swap to SQL Server)
 - Q: What happens to expenses when a badge with expenses is deleted? → A: Soft-delete — badge is hidden from selection but preserved on existing expenses for historical accuracy
 - Q: What currency and decimal precision for expense amounts? → A: No specific currency symbol; display numbers with 2 decimal places
 - Q: Should pending expenses be included in dashboard totals? → A: Exclude from main totals; show a separate "pending total" on dashboard
@@ -182,7 +189,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 
 - The application UI is in Arabic with right-to-left (RTL) layout direction. All labels, validation messages, and user-facing text are in Arabic.
 - The application is single-user (no authentication or multi-user support required in this version).
-- The application will store data locally using SQLite as the database engine, accessed via Entity Framework Core. Cloud sync is out of scope for this version.
+- The application will store data locally using JSON files as the default persistence provider, with an EF Core-ready structure allowing future swap to SQL Server via configuration. Cloud sync is out of scope for this version.
 - Currency is uniform — the system does not display a currency symbol and does not handle currency conversion. All amounts are stored and displayed as plain numbers with 2 decimal places.
 - The application is web-based, running in a browser. Mobile-native versions are out of scope.
 - Badge colors are chosen from a predefined palette or a color picker; the exact mechanism is an implementation detail.

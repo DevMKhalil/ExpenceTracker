@@ -39,7 +39,7 @@ Build a full-featured Expense Tracker web application using ASP.NET Core Razor P
 | 10 | III — Repository Pattern | IRepository in Domain, implementations in Infrastructure | ✅ PASS | JSON file provider as default implementation |
 | 11 | III — JSON File Storage | Atomic writes (temp + rename), configurable paths | ✅ PASS | `FileAtomicWriter` helper, path from `appsettings.json` |
 | 12 | III — EF Core Ready | Fluent API `IEntityTypeConfiguration<T>` maintained | ✅ PASS | Configuration classes co-located in each module's Infrastructure |
-| 13 | III — Provider Switching | Selectable via `appsettings.json`, DI wires correct impl | ✅ PASS | Startup reads config key to register JSON or EF provider |
+| 13 | III — Provider Switching | Selectable via `Persistence:Provider` in `appsettings.json`; startup reads config and conditionally registers JSON or EF provider | ✅ PASS | Startup reads config key to register JSON or EF provider |
 | 14 | — Auth excluded | User explicitly excluded authentication | ✅ PASS | Spec confirms single-user; no auth middleware needed |
 
 All gates pass. Proceeding to Phase 0.
@@ -69,8 +69,7 @@ ExpenceTracker/
 │
 ├── Shared/                                     # ── Shared Kernel ──
 │   ├── Domain/
-│   │   ├── Entity.cs                           # Base entity (Guid Id, CreatedAt, UpdatedAt)
-│   │   └── DomainEvent.cs                      # Base domain event marker
+│   │   └── Entity.cs                           # Base entity (Guid Id, CreatedAt, UpdatedAt)
 │   └── Infrastructure/
 │       ├── JsonFileRepository.cs               # Generic JSON file repository base
 │       └── FileAtomicWriter.cs                 # Atomic temp-file-then-rename writer
@@ -87,6 +86,7 @@ ExpenceTracker/
 │   │   │   │   └── DeleteBadgeCommand.cs       # Soft-delete logic
 │   │   │   └── Queries/
 │   │   │       ├── GetAllBadgesQuery.cs
+│   │   │       ├── GetAllBadgesIncludingDeletedQuery.cs  # Returns all badges (active + soft-deleted) for historical display
 │   │   │       └── GetBadgeByIdQuery.cs
 │   │   └── Infrastructure/
 │   │       ├── JsonBadgeRepository.cs           # JSON file implementation
@@ -104,11 +104,12 @@ ExpenceTracker/
 │       │   │   ├── UpdateExpenseCommand.cs
 │       │   │   └── DeleteExpenseCommand.cs
 │       │   ├── Queries/
-│       │   │   ├── GetAllExpensesQuery.cs
-│       │   │   ├── GetExpenseByIdQuery.cs
-│       │   │   ├── GetDailySummaryQuery.cs
-│       │   │   ├── GetMonthlySummaryQuery.cs
-│       │   │   └── GetBadgeSummaryQuery.cs
+│       │       ├── GetAllExpensesQuery.cs       # Uses MediatR to dispatch GetAllBadgesIncludingDeletedQuery (no direct IBadgeRepository)
+│       │       ├── GetExpenseByIdQuery.cs       # Uses MediatR to dispatch GetBadgeByIdQuery (no direct IBadgeRepository)
+│       │       ├── GetDailySummaryQuery.cs
+│       │       ├── GetMonthlySummaryQuery.cs
+│       │       ├── GetBadgeSummaryQuery.cs      # Uses MediatR to dispatch GetAllBadgesIncludingDeletedQuery (no direct IBadgeRepository)
+│       │       └── GetPendingTotalQuery.cs      # Sums all pending expenses for the dashboard pending total
 │       │   └── DTOs/
 │       │       ├── ExpenseDto.cs
 │       │       └── DashboardSummaryDto.cs
@@ -158,7 +159,11 @@ ExpenceTracker/
         └── bootstrap/dist/                     # Bootstrap 5 LTR + RTL (already present)
 ```
 
-**Structure Decision**: Single ASP.NET Core Razor Pages project with folder-based Modular Monolith. Modules (`Badges`, `Expenses`) are isolated as folders under `Modules/`, each with their own Domain / Application / Infrastructure layers. Presentation (`Pages/`) stays at the project root following Razor Pages conventions. Shared Kernel lives in `Shared/`. This is appropriate because the scope (2 modules, single-user) does not warrant separate class-library projects while still maintaining clean module boundaries per the constitution.
+**Structure Decision**: Single ASP.NET Core Razor Pages project with folder-based Modular Monolith. Modules (`Badges`, `Expenses`) are isolated as folders under `Modules/`, each with their own Domain / Application / Infrastructure layers. Presentation (`Pages/`) stays at the project root following Razor Pages conventions. Shared Kernel lives in `Shared/`. **Cross-module communication**: The Expenses module MUST NOT directly inject `IBadgeRepository`. Instead, it dispatches `GetAllBadgesQuery` / `GetAllBadgesIncludingDeletedQuery` / `GetBadgeByIdQuery` via MediatR to the Badges module, preserving module boundaries. Use `GetAllBadgesIncludingDeletedQuery` when historical (soft-deleted) badge data is needed (e.g., expense lists, dashboard badge breakdown). This is appropriate because the scope (2 modules, single-user) does not warrant separate class-library projects while still maintaining clean module boundaries per the constitution.
+
+## Skeleton Loader Strategy
+
+**Approach**: CSS-only placeholder shimmer during the initial paint. Since the application uses server-rendered Razor Pages (not a client-side SPA), traditional JavaScript skeleton loaders are not applicable. Instead, the layout renders lightweight CSS shimmer placeholders in the initial HTML response. These placeholders are visible during the brief window before the server-rendered content is fully painted. The shimmer effect is achieved purely with CSS `@keyframes` and `linear-gradient` animations on placeholder `<div>` elements, requiring no JavaScript. This applies to the badge list (T031), expense list (T051), and dashboard (T058) pages.
 
 ## Complexity Tracking
 
