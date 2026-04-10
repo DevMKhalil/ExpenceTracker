@@ -118,6 +118,7 @@ if ((Test-Path $paths.CONTRACTS_DIR) -and (Get-ChildItem -Path $paths.CONTRACTS_
 }
 
 if (Test-Path $paths.QUICKSTART) { $docs += 'quickstart.md' }
+if (Test-Path $paths.ANALYSIS) { $docs += 'analysis.md' }
 
 # Include tasks.md if requested and it exists
 if ($IncludeTasks -and (Test-Path $paths.TASKS)) { 
@@ -141,6 +142,7 @@ if ($Json) {
     Test-FileExists -Path $paths.DATA_MODEL -Description 'data-model.md' | Out-Null
     Test-DirHasFiles -Path $paths.CONTRACTS_DIR -Description 'contracts/' | Out-Null
     Test-FileExists -Path $paths.QUICKSTART -Description 'quickstart.md' | Out-Null
+    Test-FileExists -Path $paths.ANALYSIS -Description 'analysis.md' | Out-Null
     
     if ($IncludeTasks) {
         Test-FileExists -Path $paths.TASKS -Description 'tasks.md' | Out-Null

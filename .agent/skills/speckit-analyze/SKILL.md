@@ -25,7 +25,7 @@ Identify inconsistencies, duplications, ambiguities, and underspecified items ac
 
 ## Operating Constraints
 
-**STRICTLY READ-ONLY**: Do **not** modify any files. Output a structured analysis report. Offer an optional remediation plan (user must explicitly approve before any follow-up editing commands would be invoked manually).
+**READ-ONLY on spec/plan/tasks — WRITE-ONLY to analysis.md**: Do **not** modify `spec.md`, `plan.md`, or `tasks.md`. The full structured analysis report is written to `FEATURE_DIR/analysis.md`. A concise summary is also displayed in chat. Offer an optional remediation step via `/speckit.remediate` (which reads the saved report automatically).
 
 **Constitution Authority**: The project constitution (`.specify/memory/constitution.md`) is **non-negotiable** within this analysis scope. Constitution conflicts are automatically CRITICAL and require adjustment of the spec, plan, or tasks—not dilution, reinterpretation, or silent ignoring of the principle. If a principle itself needs to change, that must occur in a separate, explicit constitution update outside `/speckit.analyze`.
 
@@ -38,6 +38,7 @@ Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -In
 - SPEC = FEATURE_DIR/spec.md
 - PLAN = FEATURE_DIR/plan.md
 - TASKS = FEATURE_DIR/tasks.md
+- ANALYSIS = FEATURE_DIR/analysis.md
 
 Abort with an error message if any required file is missing (instruct the user to run missing prerequisite command).
 For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
@@ -131,7 +132,24 @@ Use this heuristic to prioritize findings:
 
 ### 6. Produce Compact Analysis Report
 
-Output a Markdown report (no file writes) with the following structure:
+Write the full analysis report to `ANALYSIS` (i.e., `FEATURE_DIR/analysis.md`). The file MUST begin with a YAML frontmatter block containing metadata for downstream consumers (e.g., `/speckit.remediate`):
+
+```yaml
+---
+generated_at: "2026-03-29T14:30:00Z"  # ISO 8601 UTC timestamp of report generation
+source_files:
+  spec.md: "2026-03-29T12:00:00Z"     # Last-modified timestamp of spec.md at analysis time
+  plan.md: "2026-03-29T12:15:00Z"     # Last-modified timestamp of plan.md at analysis time
+  tasks.md: "2026-03-29T13:00:00Z"    # Last-modified timestamp of tasks.md at analysis time
+---
+```
+
+To obtain file timestamps, run a PowerShell command like:
+```powershell
+Get-Item "$SPEC","$PLAN","$TASKS" | Select-Object Name, @{N='LastWrite';E={$_.LastWriteTimeUtc.ToString('o')}}
+```
+
+After the frontmatter, write the report body with the following structure:
 
 ## Specification Analysis Report
 
@@ -159,6 +177,18 @@ Output a Markdown report (no file writes) with the following structure:
 - Duplication Count
 - Critical Issues Count
 
+After writing the file, output a **concise chat summary** (do NOT repeat the full report in chat):
+
+```
+## Analysis Complete
+
+- **Findings**: X total (Y CRITICAL, Z HIGH, W MEDIUM, V LOW)
+- **Coverage**: XX% of requirements have task coverage
+- **Report saved to**: `specs/{branch}/analysis.md`
+
+Run `/speckit.remediate` to automatically apply fixes from this report.
+```
+
 ### 7. Provide Next Actions
 
 At end of report, output a concise Next Actions block:
@@ -169,7 +199,9 @@ At end of report, output a concise Next Actions block:
 
 ### 8. Offer Remediation
 
-Ask the user: "Would you like me to suggest concrete remediation edits for the top N issues?" (Do NOT apply them automatically.)
+Point the user to the saved report and suggest the next step:
+
+> "The full analysis report has been saved to `specs/{branch}/analysis.md`. To automatically apply the recommended fixes, run `/speckit.remediate`. The remediate agent will read the report directly from the file."
 
 ## Operating Principles
 
@@ -182,7 +214,8 @@ Ask the user: "Would you like me to suggest concrete remediation edits for the t
 
 ### Analysis Guidelines
 
-- **NEVER modify files** (this is read-only analysis)
+- **NEVER modify spec.md, plan.md, or tasks.md** (this agent only writes to analysis.md)
+- **ALWAYS overwrite** analysis.md on each run (git tracks history)
 - **NEVER hallucinate missing sections** (if absent, report them accurately)
 - **Prioritize constitution violations** (these are always CRITICAL)
 - **Use examples over exhaustive rules** (cite specific instances, not generic patterns)
