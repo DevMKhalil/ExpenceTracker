@@ -115,7 +115,8 @@ ExpenceTracker/
 │       │       └── DashboardSummaryDto.cs
 │       └── Infrastructure/
 │           ├── JsonExpenseRepository.cs         # JSON file implementation
-│           └── ExpenseEntityConfiguration.cs    # EF Core Fluent API (maintained)
+│           ├── ExpenseEntityConfiguration.cs    # EF Core Fluent API (maintained)
+│           └── ExpenseBadgeEntityConfiguration.cs  # EF Core Fluent API for ExpenseBadge join entity
 │
 ├── Pages/                                      # ── Presentation Layer ──
 │   ├── _ViewImports.cshtml                     # Tag helpers, localizer injection

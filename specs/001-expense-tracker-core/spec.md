@@ -64,7 +64,7 @@ As a user, I want to view, edit, and delete my recorded expenses so I can manage
 1. **Given** expenses exist, **When** the user views the expense list, **Then** expenses are displayed with name, amount, date, badges (shown in their colors), importance level, and pending status.
 2. **Given** an expense exists, **When** the user edits its amount from 150 to 200, **Then** the updated amount is saved and reflected in the list.
 3. **Given** an expense exists, **When** the user deletes it, **Then** the expense is removed from the list.
-4. **Given** the expense list is displayed, **When** there are many expenses, **Then** the list supports a "Load More" button pagination approach to remain usable.
+4. **Given** the expense list is displayed, **When** there are many expenses, **Then** the list supports a "Load More" button pagination approach (loading 20 items per batch) to remain usable.
 5. **Given** the user views an expense, **When** it is marked as "Pending", **Then** it is visually distinguished from finalized expenses.
 
 ---
@@ -139,7 +139,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 **Dashboard**:
 - **FR-016**: System MUST display a daily spending total for the current day, excluding pending expenses.
 - **FR-017**: System MUST display a monthly spending total for the current month, excluding pending expenses.
-- **FR-018**: System MUST display a spending breakdown grouped by badge, showing each badge's total with its assigned color, excluding pending expenses.
+- **FR-018**: System MUST display a spending breakdown grouped by badge, showing up to 5 top badges by total with each badge's assigned color, excluding pending expenses.
 - **FR-024**: System MUST display a separate pending total on the dashboard showing the sum of all pending expenses regardless of time range.
 
 **Quick Entry UX**:
@@ -157,6 +157,7 @@ As a user, I want the expense entry interface to be streamlined and optimized fo
 
 **Expense List Behavior**:
 - **FR-027**: System MUST default the expense list sort order to Date descending (newest first).
+- **FR-028**: System MUST implement "Load More" button pagination on the expense list, loading 20 items per batch.
 
 ### Key Entities
 
