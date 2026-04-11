@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title"><value>الشارات</value></data>
+  <data name="CreateNew"><value>إضافة شارة جديدة</value></data>
+  <data name="ConfirmDelete"><value>هل أنت متأكد من حذف هذه الشارة؟</value></data>
+</root>

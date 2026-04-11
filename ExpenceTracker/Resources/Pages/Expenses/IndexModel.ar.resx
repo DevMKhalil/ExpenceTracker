@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title"><value>المصروفات</value></data>
+  <data name="AddNew"><value>إضافة مصروف جديد</value></data>
+  <data name="ConfirmDelete"><value>هل أنت متأكد من حذف هذا المصروف؟</value></data>
+</root>

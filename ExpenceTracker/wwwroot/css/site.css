@@ -29,3 +29,111 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+:root {
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --surface-color: #ffffff;
+  --text-color: #212529;
+}
+
+[data-bs-theme="dark"] {
+  --primary-color: #0b5ed7;
+  --secondary-color: #5c636a;
+  --success-color: #157347;
+  --danger-color: #bb2d3b;
+  --surface-color: #212529;
+  --text-color: #f8f9fa;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.badge-toggle {
+    display: inline-flex;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 2px solid;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-toggle.selected {
+    color: white !important;
+    transform: scale(1.1);
+}
+
+/* Quick Entry UI */
+.toast-success {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--success-color);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    z-index: 9999;
+    animation: slideInDown 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+    from { transform: translate(-50%, -100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+/* RTL logical properties and mobile-first fixes */
+@media (max-width: 768px) {
+    .badge-toggle {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    input.form-control, select.form-select, textarea.form-control {
+        font-size: 16px !important;
+    }
+}
+
+/* Animations and Transitions */
+.card, .btn, .badge-pill, .badge-toggle {
+    transition: all 0.3s ease-out;
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.expense-item, .card {
+    animation: fadeInSlideUp 0.4s ease-out;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

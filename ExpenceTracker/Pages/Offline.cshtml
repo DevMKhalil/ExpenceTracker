@@ -1,0 +1,24 @@
+@page "/offline"
+@model ExpenceTracker.Pages.OfflineModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أنت غير متصل بالإنترنت</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f8f9fa; color: #212529; text-align: center; }
+        .icon { font-size: 4rem; margin-bottom: 1rem; color: #6c757d; }
+        .btn { display: inline-block; font-weight: 400; text-align: center; border: 1px solid transparent; padding: .375rem .75rem; font-size: 1rem; border-radius: .25rem; color: #fff; background-color: #0d6efd; border-color: #0d6efd; text-decoration: none; cursor: pointer; margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="icon">📡</div>
+    <h1>أنت غير متصل بالإنترنت</h1>
+    <p>يرجى التحقق من اتصالك بالإنترنت والمحاولة مجدداً.</p>
+    <button class="btn" onclick="location.reload()">إعادة المحاولة</button>
+</body>
+</html>

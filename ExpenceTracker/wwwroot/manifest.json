@@ -1,0 +1,21 @@
+{
+  "name": "متتبع المصروفات - Expense Tracker",
+  "short_name": "المصروفات",
+  "description": "Track your daily expenses",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

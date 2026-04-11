@@ -1,5 +1,26 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+
+:root {
+  --app-bg: #f8f9fa;
+  --app-surface: #ffffff;
+  --app-text: #212529;
+}
+
+[data-bs-theme="dark"] {
+  --app-bg: #121212;
+  --app-surface: #1e1e1e;
+  --app-text: #e0e0e0;
+}
+
+body {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+}
+
+.bg-surface {
+    background-color: var(--app-surface) !important;
+}
 
 a.navbar-brand {
   white-space: normal;
@@ -7,36 +28,39 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-a {
-  color: #0077cc;
+.badge-pill {
+    display: inline-block;
+    border-radius: 1rem;
+    padding: 0.25em 0.75em;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.importance-normal { color: #198754; font-weight: bold; }
+.importance-important { color: #fd7e14; font-weight: bold; }
+.importance-very-important { color: #dc3545; font-weight: bold; }
+
+.expense-pending {
+    opacity: 0.7;
+    border-inline-start: 4px dashed #6c757d;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+/* Touch-friendly controls */
+button, .btn, .badge-pill, .nav-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+.card {
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    margin-bottom: 1rem;
 }
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
 }
 
 .footer {

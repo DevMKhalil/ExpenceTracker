@@ -22,16 +22,48 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Badges/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmFkZ2VzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Badges/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmFkZ2VzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Badges/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmFkZ2VzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Expenses/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Expenses/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Expenses/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Offline.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZmbGluZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/SetLanguage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0TGFuZ3VhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/NTG/source/repos/ExpenceTracker/ExpenceTracker/Pages/Shared/_ValidationScriptsPartial.cshtml]

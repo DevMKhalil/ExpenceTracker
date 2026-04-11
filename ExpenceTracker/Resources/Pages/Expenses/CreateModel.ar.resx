@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title"><value>إضافة مصروف</value></data>
+  <data name="NamePlaceholder"><value>اسم المصروف</value></data>
+  <data name="AmountPlaceholder"><value>المبلغ</value></data>
+  <data name="SelectBadges"><value>اختر الشارات</value></data>
+  <data name="NotesPlaceholder"><value>ملاحظات (اختياري)</value></data>
+  <data name="SavedSuccess"><value>تم حفظ المصروف بنجاح</value></data>
+</root>

@@ -1,0 +1,42 @@
+@page
+@model ExpenceTracker.Pages.Badges.IndexModel
+@{
+    ViewData["Title"] = SharedLocalizer["Badges"];
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>@SharedLocalizer["Badges"]</h2>
+    <a asp-page="Create" class="btn btn-primary">@SharedLocalizer["Create"]</a>
+</div>
+
+@if (Model.Badges == null || !Model.Badges.Any())
+{
+    <div class="alert alert-info border-0 shadow-sm text-center">
+        @SharedLocalizer["NoData"]
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var badge in Model.Badges)
+        {
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge-pill shadow-sm" style="background-color: @badge.Color; width: 24px; height: 24px; display: inline-block;"></span>
+                            <strong class="mb-0">@badge.Name</strong>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a asp-page="Edit" asp-route-id="@badge.Id" class="btn btn-sm btn-outline-secondary">@SharedLocalizer["Edit"]</a>
+                            <form method="post" asp-page-handler="Delete" class="d-inline">
+                                <input type="hidden" name="id" value="@badge.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger btn-delete" data-confirm="@SharedLocalizer["DeleteConfirm"]">@SharedLocalizer["Delete"]</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

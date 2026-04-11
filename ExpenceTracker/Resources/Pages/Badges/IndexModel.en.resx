@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title"><value>Badges</value></data>
+  <data name="CreateNew"><value>Create New Badge</value></data>
+  <data name="ConfirmDelete"><value>Are you sure you want to delete this badge?</value></data>
+</root>

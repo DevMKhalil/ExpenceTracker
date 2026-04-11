@@ -1,0 +1,126 @@
+@page
+@model ExpenceTracker.Pages.Expenses.IndexModel
+@using ExpenceTracker.Modules.Expenses.Domain
+@{
+    ViewData["Title"] = SharedLocalizer["Expenses"];
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>@SharedLocalizer["Expenses"]</h2>
+    <a asp-page="Create" class="btn btn-primary">@Localizer["AddNew"]</a>
+</div>
+
+@if (Model.Expenses == null || !Model.Expenses.Any())
+{
+    <div class="alert alert-info border-0 shadow-sm text-center">
+        @SharedLocalizer["NoData"]
+    </div>
+}
+else
+{
+    <div class="row" id="expense-list">
+        @for (int i = 0; i < Model.Expenses.Count; i++)
+        {
+            var expense = Model.Expenses[i];
+            var pendingClass = expense.IsPending ? "expense-pending" : "";
+            var futureStyle = expense.Date > DateTimeOffset.Now ? "border: 1px solid var(--primary-color);" : "";
+            var isHidden = i >= 20 ? "display: none;" : "";
+
+            <div class="col-12 mb-3 expense-item" style="@isHidden">
+                <div class="card h-100 border-0 shadow-sm @pendingClass" style="@futureStyle">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <strong>@expense.Name</strong>
+                                @if (expense.IsPending)
+                                {
+                                    <span class="badge bg-secondary ms-2">@SharedLocalizer["Pending"]</span>
+                                }
+                            </div>
+                            <div class="col-md-2 text-md-end font-monospace">
+                                @expense.Amount.ToString("N2")
+                            </div>
+                            <div class="col-md-2 text-muted small">
+                                @expense.Date.ToString("g")
+                            </div>
+                            <div class="col-md-3">
+                                @foreach (var badge in expense.Badges)
+                                {
+                                    if (badge.IsDeleted)
+                                    {
+                                        <span class="badge-pill border" style="color: @badge.Color; border-color: @badge.Color !important; opacity: 0.6; font-weight: normal; font-size: 0.8em; padding: 2px 6px;">
+                                            @badge.Name (@SharedLocalizer["Deleted"])
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-pill" style="background-color: @badge.Color; font-size: 0.8em; padding: 2px 6px;">
+                                            @badge.Name
+                                        </span>
+                                    }
+                                }
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-between align-items-center flex-wrap mt-2 mt-md-0">
+                                @if (expense.Importance == ImportanceLevel.Normal)
+                                {
+                                    <span class="text-success small"><i class="bi bi-circle-fill"></i> @SharedLocalizer["Normal"]</span>
+                                }
+                                else if (expense.Importance == ImportanceLevel.Important)
+                                {
+                                    <span class="text-warning small"><i class="bi bi-exclamation-circle-fill"></i> @SharedLocalizer["Important"]</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger small fw-bold"><i class="bi bi-exclamation-triangle-fill"></i> @SharedLocalizer["VeryImportant"]</span>
+                                }
+
+                                <div class="btn-group">
+                                    <a asp-page="Edit" asp-route-id="@expense.Id" class="btn btn-sm btn-outline-secondary">@SharedLocalizer["Edit"]</a>
+                                    <form method="post" asp-page-handler="Delete" class="d-inline">
+                                        <input type="hidden" name="id" value="@expense.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-delete" data-confirm="@SharedLocalizer["DeleteConfirm"]">@SharedLocalizer["Delete"]</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(expense.Notes))
+                        {
+                            <div class="mt-2 text-muted small fst-italic">
+                                @expense.Notes
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.Expenses.Count > 20)
+    {
+        <div class="text-center mt-3">
+            <button type="button" id="load-more-btn" class="btn btn-outline-primary">@Localizer["LoadMore"]</button>
+        </div>
+    }
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var loadMoreBtn = document.getElementById('load-more-btn');
+            if (loadMoreBtn) {
+                var currentIndex = 20;
+                var expenseItems = document.querySelectorAll('.expense-item');
+                loadMoreBtn.addEventListener('click', function () {
+                    var nextIndex = currentIndex + 20;
+                    for (var i = currentIndex; i < nextIndex && i < expenseItems.length; i++) {
+                        expenseItems[i].style.display = 'block';
+                    }
+                    currentIndex = nextIndex;
+                    if (currentIndex >= expenseItems.length) {
+                        loadMoreBtn.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+}

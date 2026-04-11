@@ -1,8 +1,28 @@
-﻿@page
+@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "سياسة الخصوصية - Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body p-4">
+        <h2 class="card-title fw-bold text-primary mb-4">سياسة الخصوصية</h2>
+        
+        <div class="alert alert-info border-0 bg-info bg-opacity-10 mb-4">
+            <h5 class="alert-heading text-info">بياناتك آمنة ومحلية فقط</h5>
+            <p class="mb-0">جميع البيانات المخزنة في تطبيق متتبع المصروفات تبقى على جهازك المحلي فقط. لا نقوم بجمع أو نقل أو تخزين أي من سجلاتك المالية على خوادم خارجية.</p>
+        </div>
+
+        <h4 class="mt-4">كيفية حفظ البيانات</h4>
+        <p>يتم حفظ بيانات المصروفات والشارات في ملفات محلية على الخادم الذي يستضيف التطبيق، ولن تتم مشاركتها مع أي جهة خارجية.</p>
+
+        <hr class="my-4" />
+
+        <h2 class="card-title fw-bold text-secondary mb-4 mt-5">Privacy Policy</h2>
+        
+        <div class="alert border-0 bg-secondary bg-opacity-10 mb-4">
+            <h5 class="alert-heading text-secondary">Your data is safe and local</h5>
+            <p class="mb-0">All data stored in the Expense Tracker application remains entirely local. We do not collect, transmit, or store any of your financial records on external servers.</p>
+        </div>
+    </div>
+</div>

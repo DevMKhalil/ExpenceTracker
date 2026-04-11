@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title"><value>Add Expense</value></data>
+  <data name="NamePlaceholder"><value>Expense name</value></data>
+  <data name="AmountPlaceholder"><value>Amount</value></data>
+  <data name="SelectBadges"><value>Select badges</value></data>
+  <data name="NotesPlaceholder"><value>Notes (optional)</value></data>
+  <data name="SavedSuccess"><value>Expense saved successfully</value></data>
+</root>

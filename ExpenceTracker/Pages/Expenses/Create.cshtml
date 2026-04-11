@@ -1,0 +1,84 @@
+@page
+@model ExpenceTracker.Pages.Expenses.CreateModel
+@using ExpenceTracker.Modules.Expenses.Domain
+@{
+    ViewData["Title"] = SharedLocalizer["Create"];
+}
+
+<h2>@SharedLocalizer["Create"]</h2>
+
+@if (Request.Query.ContainsKey("saved"))
+{
+    <div class="toast-success shadow">
+        @SharedLocalizer["SavedSuccess"]
+    </div>
+}
+
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body">
+        <form method="post" id="expense-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="BadgeIds" id="BadgeIds" />
+            
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">@SharedLocalizer["NamePlaceholder"]</label>
+                <input asp-for="Name" class="form-control" id="NameInput" tabindex="1" required autofocus />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Amount" class="form-label">@SharedLocalizer["AmountPlaceholder"]</label>
+                    <input asp-for="Amount" class="form-control" type="number" inputmode="decimal" step="0.01" min="0.01" tabindex="2" required />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Date" class="form-label">@SharedLocalizer["Date"]</label>
+                    <!-- using format for datetime-local -->
+                    <input asp-for="Date" class="form-control" type="datetime-local" value="@Model.Date.ToString("yyyy-MM-ddTHH:mm")" tabindex="3" required />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Importance" class="form-label">@SharedLocalizer["Importance"]</label>
+                <select asp-for="Importance" class="form-select" tabindex="4">
+                    <option value="@ImportanceLevel.Normal">@SharedLocalizer["Normal"]</option>
+                    <option value="@ImportanceLevel.Important">@SharedLocalizer["Important"]</option>
+                    <option value="@ImportanceLevel.VeryImportant">@SharedLocalizer["VeryImportant"]</option>
+                </select>
+                <span asp-validation-for="Importance" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label d-block">@SharedLocalizer["SelectBadges"]</label>
+                <div class="d-flex flex-wrap gap-2 badge-container" tabindex="5">
+                    @foreach (var badge in Model.AvailableBadges)
+                    {
+                        <span class="badge-toggle" data-id="@badge.Id" data-color="@badge.Color">@badge.Name</span>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Notes" class="form-label">@SharedLocalizer["NotesPlaceholder"]</label>
+                <textarea asp-for="Notes" class="form-control" rows="2" tabindex="6"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="IsPending" class="form-check-input" tabindex="7" />
+                <label asp-for="IsPending" class="form-check-label">@SharedLocalizer["Pending"]</label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100" tabindex="8">@SharedLocalizer["Save"]</button>
+                <a asp-page="/Index" class="btn btn-outline-secondary w-100" tabindex="9">@SharedLocalizer["Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

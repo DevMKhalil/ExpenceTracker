@@ -1,42 +1,66 @@
 /* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+:root[b-xae5sm5uus] {
+  --app-bg: #f8f9fa;
+  --app-surface: #ffffff;
+  --app-text: #212529;
+}
+
+[data-bs-theme="dark"][b-xae5sm5uus] {
+  --app-bg: #121212;
+  --app-surface: #1e1e1e;
+  --app-text: #e0e0e0;
+}
+
+body[b-xae5sm5uus] {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+}
+
+.bg-surface[b-xae5sm5uus] {
+    background-color: var(--app-surface) !important;
+}
+
 a.navbar-brand[b-xae5sm5uus] {
   white-space: normal;
   text-align: center;
   word-break: break-all;
 }
 
-a[b-xae5sm5uus] {
-  color: #0077cc;
+.badge-pill[b-xae5sm5uus] {
+    display: inline-block;
+    border-radius: 1rem;
+    padding: 0.25em 0.75em;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
 }
 
-.btn-primary[b-xae5sm5uus] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.importance-normal[b-xae5sm5uus] { color: #198754; font-weight: bold; }
+.importance-important[b-xae5sm5uus] { color: #fd7e14; font-weight: bold; }
+.importance-very-important[b-xae5sm5uus] { color: #dc3545; font-weight: bold; }
+
+.expense-pending[b-xae5sm5uus] {
+    opacity: 0.7;
+    border-inline-start: 4px dashed #6c757d;
 }
 
-.nav-pills .nav-link.active[b-xae5sm5uus], .nav-pills .show > .nav-link[b-xae5sm5uus] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+/* Touch-friendly controls */
+button[b-xae5sm5uus], .btn[b-xae5sm5uus], .badge-pill[b-xae5sm5uus], .nav-link[b-xae5sm5uus] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.border-top[b-xae5sm5uus] {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom[b-xae5sm5uus] {
-  border-bottom: 1px solid #e5e5e5;
+.card[b-xae5sm5uus] {
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    margin-bottom: 1rem;
 }
 
 .box-shadow[b-xae5sm5uus] {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy[b-xae5sm5uus] {
-  font-size: 1rem;
-  line-height: inherit;
 }
 
 .footer[b-xae5sm5uus] {

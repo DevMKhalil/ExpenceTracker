@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle"><value>متتبع المصروفات</value></data>
+  <data name="Dashboard"><value>لوحة القيادة</value></data>
+  <data name="Badges"><value>الشارات</value></data>
+  <data name="Expenses"><value>المصروفات</value></data>
+  <data name="Save"><value>حفظ</value></data>
+  <data name="Cancel"><value>إلغاء</value></data>
+  <data name="Edit"><value>تعديل</value></data>
+  <data name="Delete"><value>حذف</value></data>
+  <data name="Create"><value>إضافة</value></data>
+  <data name="Back"><value>رجوع</value></data>
+  <data name="Name"><value>الاسم</value></data>
+  <data name="Color"><value>اللون</value></data>
+  <data name="Amount"><value>المبلغ</value></data>
+  <data name="Date"><value>التاريخ</value></data>
+  <data name="Notes"><value>ملاحظات</value></data>
+  <data name="Pending"><value>معلق</value></data>
+  <data name="Importance"><value>الأهمية</value></data>
+  <data name="Normal"><value>عادي</value></data>
+  <data name="Important"><value>مهم</value></data>
+  <data name="VeryImportant"><value>مهم جدًا</value></data>
+  <data name="Actions"><value>إجراءات</value></data>
+  <data name="Confirm"><value>تأكيد</value></data>
+  <data name="DeleteConfirm"><value>هل أنت متأكد من الحذف؟</value></data>
+  <data name="NoData"><value>لا توجد بيانات</value></data>
+  <data name="DailyTotal"><value>إجمالي اليوم</value></data>
+  <data name="MonthlyTotal"><value>إجمالي الشهر</value></data>
+  <data name="PendingTotal"><value>إجمالي المعلق</value></data>
+  <data name="ByBadge"><value>حسب الشارة</value></data>
+  <data name="RequiredField"><value>هذا الحقل مطلوب</value></data>
+  <data name="PositiveNumber"><value>يجب أن يكون رقم موجب</value></data>
+  <data name="ThemeLight"><value>فاتح</value></data>
+  <data name="ThemeDark"><value>داكن</value></data>
+  <data name="Language"><value>اللغة</value></data>
+</root>

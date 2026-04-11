@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title"><value>Dashboard</value></data>
+  <data name="WelcomeMessage"><value>Welcome to Expense Tracker</value></data>
+</root>

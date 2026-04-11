@@ -1,3 +1,9 @@
-﻿@using ExpenceTracker
+@using ExpenceTracker
 @namespace ExpenceTracker.Pages
+@using ExpenceTracker.Resources
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<SharedResource> SharedLocalizer
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
