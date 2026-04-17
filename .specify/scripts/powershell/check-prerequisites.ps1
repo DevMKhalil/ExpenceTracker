@@ -19,6 +19,8 @@ param(
     [switch]$Json,
     [switch]$RequireTasks,
     [switch]$IncludeTasks,
+    [switch]$RequireReview,
+    [switch]$IncludeReview,
     [switch]$PathsOnly,
     [switch]$Help
 )
@@ -105,6 +107,13 @@ if ($RequireTasks -and -not (Test-Path $paths.TASKS -PathType Leaf)) {
     exit 1
 }
 
+# Check for review.md if required
+if ($RequireReview -and -not (Test-Path $paths.REVIEW -PathType Leaf)) {
+    Write-Output "ERROR: review.md not found in $($paths.FEATURE_DIR)"
+    Write-Output "Run /speckit.review first to generate the review report."
+    exit 1
+}
+
 # Build list of available documents
 $docs = @()
 
@@ -119,6 +128,7 @@ if ((Test-Path $paths.CONTRACTS_DIR) -and (Get-ChildItem -Path $paths.CONTRACTS_
 
 if (Test-Path $paths.QUICKSTART) { $docs += 'quickstart.md' }
 if (Test-Path $paths.ANALYSIS) { $docs += 'analysis.md' }
+if (Test-Path $paths.REVIEW) { $docs += 'review.md' }
 
 # Include tasks.md if requested and it exists
 if ($IncludeTasks -and (Test-Path $paths.TASKS)) { 
@@ -143,6 +153,7 @@ if ($Json) {
     Test-DirHasFiles -Path $paths.CONTRACTS_DIR -Description 'contracts/' | Out-Null
     Test-FileExists -Path $paths.QUICKSTART -Description 'quickstart.md' | Out-Null
     Test-FileExists -Path $paths.ANALYSIS -Description 'analysis.md' | Out-Null
+    Test-FileExists -Path $paths.REVIEW -Description 'review.md' | Out-Null
     
     if ($IncludeTasks) {
         Test-FileExists -Path $paths.TASKS -Description 'tasks.md' | Out-Null
