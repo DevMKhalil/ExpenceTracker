@@ -23,7 +23,8 @@ else
         {
             var expense = Model.Expenses[i];
             var pendingClass = expense.IsPending ? "expense-pending" : "";
-            var futureStyle = expense.Date > DateTimeOffset.Now ? "border: 1px solid var(--primary-color);" : "";
+            var isFuture = expense.Date > DateTimeOffset.Now;
+            var futureStyle = isFuture ? "background-color: rgba(255, 193, 7, 0.1);" : "";
             var isHidden = i >= 20 ? "display: none;" : "";
 
             <div class="col-12 mb-3 expense-item" style="@isHidden">
@@ -35,6 +36,10 @@ else
                                 @if (expense.IsPending)
                                 {
                                     <span class="badge bg-secondary ms-2">@SharedLocalizer["Pending"]</span>
+                                }
+                                @if (isFuture)
+                                {
+                                    <span class="badge bg-warning text-dark ms-2">@SharedLocalizer["Future"]</span>
                                 }
                             </div>
                             <div class="col-md-2 text-md-end font-monospace">

@@ -35,21 +35,25 @@ namespace ExpenceTracker.Modules.Badges.Infrastructure
 
         public async Task AddAsync(Badge badge)
         {
-            var all = await ReadAllAsync();
-            all.Add(badge);
-            await WriteAllAsync(all);
+            await ReadModifyWriteAsync(all =>
+            {
+                all.Add(badge);
+                return all;
+            });
         }
 
         public async Task UpdateAsync(Badge badge)
         {
-            var all = await ReadAllAsync();
-            var index = all.FindIndex(b => b.Id == badge.Id);
-            if (index >= 0)
+            await ReadModifyWriteAsync(all =>
             {
-                badge.UpdatedAt = DateTimeOffset.UtcNow;
-                all[index] = badge;
-                await WriteAllAsync(all);
-            }
+                var index = all.FindIndex(b => b.Id == badge.Id);
+                if (index >= 0)
+                {
+                    badge.UpdatedAt = DateTimeOffset.UtcNow;
+                    all[index] = badge;
+                }
+                return all;
+            });
         }
 
         public async Task<bool> ExistsByNameAsync(string name, Guid? excludeId = null)

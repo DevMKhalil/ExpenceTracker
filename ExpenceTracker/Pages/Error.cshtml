@@ -1,14 +1,14 @@
 @page
 @model ErrorModel
 @{
-    ViewData["Title"] = "خطأ - Error";
+    ViewData["Title"] = SharedLocalizer["ErrorTitle"];
 }
 
 <div class="card border-danger shadow-sm mt-5 text-center">
     <div class="card-body py-5">
         <h1 class="text-danger display-4 mb-4"><i class="bi bi-exclamation-triangle"></i></h1>
-        <h2 class="text-danger mb-3">عذراً، حدث خطأ أثناء معالجة طلبك.</h2>
-        <p class="text-muted mb-4">Sorry, an error occurred while processing your request.</p>
+        <h2 class="text-danger mb-3">@SharedLocalizer["ErrorTitle"]</h2>
+        <p class="text-muted mb-4">@SharedLocalizer["ErrorSubtitle"]</p>
         
         @if (Model.ShowRequestId)
         {
@@ -18,7 +18,7 @@
         }
         
         <div>
-            <a asp-page="/Index" class="btn btn-primary px-4">رجوع إلى لوحة القيادة (Go to Dashboard)</a>
+            <a asp-page="/Index" class="btn btn-primary px-4">@SharedLocalizer["GoToDashboard"]</a>
         </div>
     </div>
 </div>

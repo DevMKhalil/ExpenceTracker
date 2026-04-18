@@ -45,4 +45,14 @@
   <data name="ThemeLight"><value>فاتح</value></data>
   <data name="ThemeDark"><value>داكن</value></data>
   <data name="Language"><value>اللغة</value></data>
+  <data name="Future"><value>مستقبلي</value></data>
+  <data name="Deleted"><value>محذوف</value></data>
+  <data name="ErrorTitle"><value>عذراً، حدث خطأ أثناء معالجة طلبك.</value></data>
+  <data name="ErrorSubtitle"><value>يرجى المحاولة مرة أخرى لاحقًا.</value></data>
+  <data name="GoToDashboard"><value>رجوع إلى لوحة القيادة</value></data>
+  <data name="PrivacyTitle"><value>سياسة الخصوصية</value></data>
+  <data name="PrivacyHeadline"><value>بياناتك آمنة ومحلية فقط</value></data>
+  <data name="PrivacyBody"><value>جميع البيانات المخزنة في تطبيق متتبع المصروفات تبقى على جهازك المحلي فقط. لا نقوم بجمع أو نقل أو تخزين أي من سجلاتك المالية على خوادم خارجية.</value></data>
+  <data name="PrivacyStorageTitle"><value>كيفية حفظ البيانات</value></data>
+  <data name="PrivacyStorageBody"><value>يتم حفظ بيانات المصروفات والشارات في ملفات محلية على الخادم الذي يستضيف التطبيق، ولن تتم مشاركتها مع أي جهة خارجية.</value></data>
 </root>

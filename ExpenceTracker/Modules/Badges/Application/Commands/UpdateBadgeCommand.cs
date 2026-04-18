@@ -22,6 +22,8 @@ namespace ExpenceTracker.Modules.Badges.Application.Commands
         {
             if (string.IsNullOrWhiteSpace(request.Name))
                 throw new ArgumentException("Name cannot be empty", nameof(request.Name));
+            if (request.Name.Length > 100)
+                throw new ArgumentException("Name cannot exceed 100 characters", nameof(request.Name));
             if (!Regex.IsMatch(request.Color, "^#[0-9A-Fa-f]{6}$"))
                 throw new ArgumentException("Color must be a valid hex color code", nameof(request.Color));
 

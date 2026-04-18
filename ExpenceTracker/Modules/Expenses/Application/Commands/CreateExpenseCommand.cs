@@ -29,6 +29,10 @@ namespace ExpenceTracker.Modules.Expenses.Application.Commands
         {
             if (string.IsNullOrWhiteSpace(request.Name))
                 throw new ArgumentException("Name cannot be empty", nameof(request.Name));
+            if (request.Name.Length > 200)
+                throw new ArgumentException("Name cannot exceed 200 characters", nameof(request.Name));
+            if (request.Notes != null && request.Notes.Length > 1000)
+                throw new ArgumentException("Notes cannot exceed 1000 characters", nameof(request.Notes));
             if (request.Amount <= 0 || request.Amount > 99999999.99m)
                 throw new ArgumentException("Amount must be between 0.01 and 99999999.99", nameof(request.Amount));
 

@@ -45,4 +45,14 @@
   <data name="ThemeLight"><value>Light</value></data>
   <data name="ThemeDark"><value>Dark</value></data>
   <data name="Language"><value>Language</value></data>
+  <data name="Future"><value>Future</value></data>
+  <data name="Deleted"><value>Deleted</value></data>
+  <data name="ErrorTitle"><value>Sorry, an error occurred while processing your request.</value></data>
+  <data name="ErrorSubtitle"><value>Please try again later.</value></data>
+  <data name="GoToDashboard"><value>Go to Dashboard</value></data>
+  <data name="PrivacyTitle"><value>Privacy Policy</value></data>
+  <data name="PrivacyHeadline"><value>Your data is safe and local</value></data>
+  <data name="PrivacyBody"><value>All data stored in the Expense Tracker application remains entirely local. We do not collect, transmit, or store any of your financial records on external servers.</value></data>
+  <data name="PrivacyStorageTitle"><value>How data is stored</value></data>
+  <data name="PrivacyStorageBody"><value>Expense and badge data are stored in local files on the server hosting the application and will not be shared with any external party.</value></data>
 </root>

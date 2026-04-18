@@ -110,7 +110,6 @@ C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\en\Exp
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\en\ExpenceTracker.resources.dll
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\tqdgpguaqq-{0}-d57qo6qo1c-d57qo6qo1c.gz
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\o1905khjvn-{0}-ek18jai63d-ek18jai63d.gz
-C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\rdindss4rf-{0}-odppvesae2-odppvesae2.gz
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\pcmugdhtmb-{0}-sfu23guawf-sfu23guawf.gz
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\yuwq27lxv1-{0}-sfu23guawf-sfu23guawf.gz
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\ExpenceT.114C62A8.Up2Date
@@ -131,5 +130,6 @@ C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\Expenc
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\1qtxebkstz-{0}-dytuz4ge9b-dytuz4ge9b.gz
-C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\9672upad4o-{0}-0mlojleadk-0mlojleadk.gz
+C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\rdindss4rf-{0}-42354yoxbq-42354yoxbq.gz
+C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\9672upad4o-{0}-9usvxhrdy4-9usvxhrdy4.gz
+C:\Users\NTG\source\repos\ExpenceTracker\ExpenceTracker\obj\Debug\net10.0\compressed\1qtxebkstz-{0}-w33yq7gg2g-w33yq7gg2g.gz

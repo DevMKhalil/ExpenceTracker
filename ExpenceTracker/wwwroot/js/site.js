@@ -7,28 +7,36 @@ document.addEventListener("DOMContentLoaded", function () {
             currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
         document.documentElement.setAttribute('data-bs-theme', currentTheme);
-        themeToggleBtn.innerText = currentTheme === 'dark' ? '🌙' : '☀️';
+        themeToggleBtn.innerText = currentTheme === 'dark' ? '☀️' : '🌙';
 
         themeToggleBtn.addEventListener('click', function () {
             currentTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-bs-theme', currentTheme);
             localStorage.setItem('theme', currentTheme);
-            themeToggleBtn.innerText = currentTheme === 'dark' ? '🌙' : '☀️';
+            themeToggleBtn.innerText = currentTheme === 'dark' ? '☀️' : '🌙';
         });
     }
 
     // 2. Badge pill toggle
     document.querySelectorAll('.badge-toggle').forEach(btn => {
-        btn.addEventListener('click', function () {
-            this.classList.toggle('selected');
-            if (this.classList.contains('selected')) {
-                this.style.backgroundColor = this.getAttribute('data-color') || 'var(--primary-color)';
-                this.style.borderColor = this.getAttribute('data-color') || 'var(--primary-color)';
+        function toggleBadge(el) {
+            el.classList.toggle('selected');
+            el.setAttribute('aria-pressed', el.classList.contains('selected'));
+            if (el.classList.contains('selected')) {
+                el.style.backgroundColor = el.getAttribute('data-color') || 'var(--primary-color)';
+                el.style.borderColor = el.getAttribute('data-color') || 'var(--primary-color)';
             } else {
-                this.style.backgroundColor = 'transparent';
-                this.style.borderColor = this.getAttribute('data-color') || 'var(--primary-color)';
+                el.style.backgroundColor = 'transparent';
+                el.style.borderColor = el.getAttribute('data-color') || 'var(--primary-color)';
             }
             updateBadgeIds();
+        }
+        btn.addEventListener('click', function () { toggleBadge(this); });
+        btn.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleBadge(this);
+            }
         });
         
         // initialize styles

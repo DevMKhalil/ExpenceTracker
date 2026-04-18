@@ -30,32 +30,38 @@ namespace ExpenceTracker.Modules.Expenses.Infrastructure
 
         public async Task AddAsync(Expense expense)
         {
-            var all = await ReadAllAsync();
-            all.Add(expense);
-            await WriteAllAsync(all);
+            await ReadModifyWriteAsync(all =>
+            {
+                all.Add(expense);
+                return all;
+            });
         }
 
         public async Task UpdateAsync(Expense expense)
         {
-            var all = await ReadAllAsync();
-            var index = all.FindIndex(e => e.Id == expense.Id);
-            if (index >= 0)
+            await ReadModifyWriteAsync(all =>
             {
-                expense.UpdatedAt = DateTimeOffset.UtcNow;
-                all[index] = expense;
-                await WriteAllAsync(all);
-            }
+                var index = all.FindIndex(e => e.Id == expense.Id);
+                if (index >= 0)
+                {
+                    expense.UpdatedAt = DateTimeOffset.UtcNow;
+                    all[index] = expense;
+                }
+                return all;
+            });
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var all = await ReadAllAsync();
-            var index = all.FindIndex(e => e.Id == id);
-            if (index >= 0)
+            await ReadModifyWriteAsync(all =>
             {
-                all.RemoveAt(index);
-                await WriteAllAsync(all);
-            }
+                var index = all.FindIndex(e => e.Id == id);
+                if (index >= 0)
+                {
+                    all.RemoveAt(index);
+                }
+                return all;
+            });
         }
 
         public async Task<List<Expense>> GetByDateRangeAsync(DateTimeOffset from, DateTimeOffset to)

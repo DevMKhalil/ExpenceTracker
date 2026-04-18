@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ExpenceTracker.Modules.Expenses.Domain;
+using ExpenceTracker.Modules.Badges.Domain;
 
 namespace ExpenceTracker.Modules.Expenses.Infrastructure
 {
@@ -10,9 +11,16 @@ namespace ExpenceTracker.Modules.Expenses.Infrastructure
         {
             builder.ToTable("ExpenseBadges");
             builder.HasKey(eb => new { eb.ExpenseId, eb.BadgeId });
-            
-            // Note: navigation properties would be mapped here if Expense object had an ICollection<ExpenseBadge>.
-            // Since this is just the mapping info for the Fluent API:
+
+            builder.HasOne<Expense>()
+                .WithMany()
+                .HasForeignKey(eb => eb.ExpenseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne<Badge>()
+                .WithMany()
+                .HasForeignKey(eb => eb.BadgeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

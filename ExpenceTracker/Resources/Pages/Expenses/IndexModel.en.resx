@@ -3,4 +3,5 @@
   <data name="Title"><value>Expenses</value></data>
   <data name="AddNew"><value>Add New Expense</value></data>
   <data name="ConfirmDelete"><value>Are you sure you want to delete this expense?</value></data>
+  <data name="LoadMore"><value>Load More</value></data>
 </root>

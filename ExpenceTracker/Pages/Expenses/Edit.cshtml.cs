@@ -86,7 +86,9 @@ namespace ExpenceTracker.Pages.Expenses
             var badgeIdsList = string.IsNullOrWhiteSpace(BadgeIds)
                 ? new List<Guid>()
                 : BadgeIds.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                          .Select(uid => Guid.Parse(uid))
+                          .Select(uid => Guid.TryParse(uid, out var guid) ? guid : (Guid?)null)
+                          .Where(id => id.HasValue)
+                          .Select(id => id!.Value)
                           .ToList();
 
             try

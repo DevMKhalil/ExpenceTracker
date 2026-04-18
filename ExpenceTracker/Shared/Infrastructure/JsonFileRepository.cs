@@ -22,43 +22,50 @@ namespace ExpenceTracker.Shared.Infrastructure
             }
         }
 
+        private async Task<List<T>> ReadAllInternalAsync()
+        {
+            if (!File.Exists(_filePath))
+                return new List<T>();
+            var json = await File.ReadAllTextAsync(_filePath);
+            return JsonSerializer.Deserialize<List<T>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? new List<T>();
+        }
+
+        private async Task WriteAllInternalAsync(List<T> items)
+        {
+            var json = JsonSerializer.Serialize(items, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            await FileAtomicWriter.WriteAllTextAsync(_filePath, json);
+        }
+
         protected async Task<List<T>> ReadAllAsync()
         {
             await _semaphore.WaitAsync();
-            try
-            {
-                if (!File.Exists(_filePath))
-                {
-                    return new List<T>();
-                }
-
-                var json = await File.ReadAllTextAsync(_filePath);
-                return JsonSerializer.Deserialize<List<T>>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                }) ?? new List<T>();
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+            try { return await ReadAllInternalAsync(); }
+            finally { _semaphore.Release(); }
         }
 
         protected async Task WriteAllAsync(List<T> items)
         {
             await _semaphore.WaitAsync();
+            try { await WriteAllInternalAsync(items); }
+            finally { _semaphore.Release(); }
+        }
+
+        protected async Task ReadModifyWriteAsync(Func<List<T>, List<T>> modify)
+        {
+            await _semaphore.WaitAsync();
             try
             {
-                var json = JsonSerializer.Serialize(items, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-                await FileAtomicWriter.WriteAllTextAsync(_filePath, json);
+                var items = await ReadAllInternalAsync();
+                items = modify(items);
+                await WriteAllInternalAsync(items);
             }
-            finally
-            {
-                _semaphore.Release();
-            }
+            finally { _semaphore.Release(); }
         }
     }
 }

@@ -15,14 +15,14 @@
             <input type="hidden" asp-for="BadgeIds" id="BadgeIds" />
             
             <div class="mb-3">
-                <label asp-for="Name" class="form-label">@SharedLocalizer["NamePlaceholder"]</label>
+                <label asp-for="Name" class="form-label">@Localizer["NamePlaceholder"]</label>
                 <input asp-for="Name" class="form-control" required autofocus />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label asp-for="Amount" class="form-label">@SharedLocalizer["AmountPlaceholder"]</label>
+                    <label asp-for="Amount" class="form-label">@Localizer["AmountPlaceholder"]</label>
                     <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" required />
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label d-block">@SharedLocalizer["SelectBadges"]</label>
+                <label class="form-label d-block">@Localizer["SelectBadges"]</label>
                 <div class="d-flex flex-wrap gap-2">
                     @{
                         var selectedIds = Model.BadgeIds.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -42,7 +42,7 @@
                     @foreach (var badge in Model.AvailableBadges)
                     {
                         var isSelected = selectedIds.Contains(badge.Id.ToString()) ? "selected" : "";
-                        <span class="badge-toggle @isSelected" data-id="@badge.Id" data-color="@badge.Color">@badge.Name</span>
+                        <span class="badge-toggle @isSelected" role="button" tabindex="0" aria-pressed="@(isSelected == "selected" ? "true" : "false")" data-id="@badge.Id" data-color="@badge.Color">@badge.Name</span>
                     }
                 </div>
             </div>
@@ -63,14 +63,14 @@
             </div>
 
             <div class="mb-4">
-                <label asp-for="Notes" class="form-label">@SharedLocalizer["NotesPlaceholder"]</label>
+                <label asp-for="Notes" class="form-label">@Localizer["NotesPlaceholder"]</label>
                 <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary w-100">@SharedLocalizer["Save"]</button>
-                <a asp-page="/Index" class="btn btn-outline-secondary w-100">@SharedLocalizer["Cancel"]</a>
+                <a asp-page="Index" class="btn btn-outline-secondary w-100">@SharedLocalizer["Cancel"]</a>
             </div>
         </form>
     </div>
